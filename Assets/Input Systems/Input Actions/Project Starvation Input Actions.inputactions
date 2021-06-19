@@ -2,7 +2,7 @@
     "name": "Project Starvation Input Actions",
     "maps": [
         {
-            "name": "PlayerControls",
+            "name": "Gameplay",
             "id": "c0ec0cb1-1ec6-40dd-a379-001b8bd5a960",
             "actions": [
                 {
@@ -35,7 +35,18 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "WASD Keys",
+                    "name": "",
+                    "id": "0008893b-9daa-4c08-8eec-2933657626d3",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "WASD",
                     "id": "39c0834b-0d50-451e-8a1d-8f65c82dab85",
                     "path": "2DVector",
                     "interactions": "",
@@ -88,6 +99,33 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "af0ba72b-18de-4d2b-b82e-9fe0d7da84c8",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "a60100db-64fd-47d1-9ccc-0b01d740ab61",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "46c24aea-77dc-4d93-88f5-4e60a0300ac7",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
