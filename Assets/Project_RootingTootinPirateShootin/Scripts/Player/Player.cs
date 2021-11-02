@@ -15,8 +15,8 @@ namespace RTPS
 
 		private Rigidbody rb = default;
 		private Vector2 movementInput = new Vector2();
-		private float actualMovementSpeed = 0f;
-		private float actualRotationSpeed = 0f;
+		private float movementSpeed = 0f;
+		private float rotation = 0f;
 
 		private void Start()
 		{
@@ -41,35 +41,34 @@ namespace RTPS
 			// Forward Movement
 			if( movementInput.y >= 1 )
 			{
-				actualMovementSpeed += stats.moveAcceleration * Time.deltaTime;
+				movementSpeed += stats.moveAcceleration * Time.deltaTime;
 			}
 			else
 			{
-				if( actualMovementSpeed > 0.01f )
+				if( movementSpeed > 0.01f )
 				{
-					actualMovementSpeed -= stats.moveAcceleration * Time.deltaTime;
+					movementSpeed -= stats.moveAcceleration * Time.deltaTime;
 				}
 				else
 				{
-					actualMovementSpeed = 0f;
+					movementSpeed = 0f;
 				}
 			}
 
 			// Rotation
-			actualRotationSpeed += movementInput.x * stats.rotateAcceleration * Time.deltaTime;
+			rotation += movementInput.x * stats.rotateAcceleration * Time.deltaTime;
 
-			actualMovementSpeed = Mathf.Clamp( actualMovementSpeed, 0, stats.maxMoveSpeed );
-			actualRotationSpeed = Mathf.Clamp( actualRotationSpeed, -stats.maxRotateSpeed, stats.maxRotateSpeed );
+			movementSpeed = Mathf.Clamp( movementSpeed, 0, stats.maxMoveSpeed );
 		}
 
 		private void Move()
 		{
-			rb.AddForce( transform.forward * actualMovementSpeed );
+			rb.AddForce( transform.forward * movementSpeed );
 		}
 
 		private void Rotate()
 		{
-			rb.MoveRotation( Quaternion.Euler( 0f, actualRotationSpeed, 0f ) );
+			rb.MoveRotation( Quaternion.Euler( 0f, transform.rotation.y + rotation, 0f ) );
 		}
 	}
 
