@@ -64,6 +64,7 @@ namespace RTPS
 
 			Quaternion q = Quaternion.FromToRotation( Vector3.up, transform.forward );
 			newProjectileGO.transform.rotation = q * projectileSpawnPoint.transform.rotation;
+
 			newProjectileGO.GetComponent<Projectile>().Initialize( force );
 
 			Destroy( newProjectileGO, 15f );

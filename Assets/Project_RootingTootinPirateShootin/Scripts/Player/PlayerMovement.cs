@@ -43,7 +43,7 @@ namespace RTPS
 
 			_rb.AddForce( transform.forward * clampedMovementSpeed );
 
-			if( _rb.velocity.z > 0.01f )
+			if( _rb.velocity.magnitude > 0.01f )
 			{
 				Vector3 deltaRotation = new Vector3( 0f, clampedRotateForce, 0f );
 				_rb.AddRelativeTorque( deltaRotation );
