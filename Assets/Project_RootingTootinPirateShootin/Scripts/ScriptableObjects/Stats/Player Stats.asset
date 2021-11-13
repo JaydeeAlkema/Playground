@@ -16,7 +16,7 @@ MonoBehaviour:
   fireRate: 5
   projectileInventory: 20
   projectileRestockTime: 30
-  projectileFireForce: 25
+  projectileFireForce: 15
   projectileMaxFireForce: 50
   rotateAcceleration: 2
   moveAcceleration: 50

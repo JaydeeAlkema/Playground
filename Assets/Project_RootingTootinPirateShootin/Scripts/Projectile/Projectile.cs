@@ -6,6 +6,7 @@ public class Projectile : MonoBehaviour
 	[SerializeField] private Rigidbody _rb = default;
 	[SerializeField] private GameObject _onHitParticles = default;
 	[SerializeField] private int _damage = 100;
+	[SerializeField] private Vector3 _destination;
 
 	private void Start()
 	{
@@ -14,13 +15,20 @@ public class Projectile : MonoBehaviour
 		Destroy( gameObject, 10f );
 	}
 
-	public void Initialize( float force )
+	private void Update()
 	{
-		_rb.AddRelativeForce( transform.forward * force, ForceMode.Impulse );
+		Vector3 movementVector = Vector3.MoveTowards( transform.position, _destination, 15f * Time.deltaTime );
+		transform.position = movementVector;
+	}
+
+	public void SetDestination( Vector3 destination )
+	{
+		_destination = destination;
 	}
 
 	private void OnTriggerEnter( Collider other )
 	{
 		other.GetComponent<IDamageable>()?.OnHit( _damage );
+		Destroy( this.gameObject );
 	}
 }

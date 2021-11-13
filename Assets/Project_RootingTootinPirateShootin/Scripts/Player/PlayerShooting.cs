@@ -13,6 +13,7 @@ namespace RTPS
 		[Space]
 		[SerializeField] private Transform _leftSideFirePoint = default;
 		[SerializeField] private Transform _rightSideFirePoint = default;
+		[SerializeField] private Vector3 firingPoint = new Vector3();
 		[Space]
 		[SerializeField] private ScriptablePlayerStats _stats;
 
@@ -20,9 +21,6 @@ namespace RTPS
 
 		private bool _leftSideCooldown = false;
 		private bool _rightSideCooldown = false;
-
-		private float _leftSideFireForce = 0f;
-		private float _rightSideFireForce = 0f;
 
 		private void Update()
 		{
@@ -33,39 +31,37 @@ namespace RTPS
 		{
 			if( Input.GetKey( _fireLeftSideKeycode ) && !_leftSideCooldown )
 			{
-				_leftSideFireForce += _stats.ProjectileFireForce * Time.deltaTime;
-				float _totalLeftSideFireForce = Mathf.Clamp( _leftSideFireForce, 0, _stats.ProjectileMaxFireForce );
-
-				Debug.Log( _totalLeftSideFireForce );
+				FiringPointDetector.Instance.Move( -_stats.ProjectileFireForce, 25f );
 			}
 			else if( Input.GetKey( _fireRightSideKeycode ) && !_rightSideCooldown )
 			{
-				_rightSideFireForce += _stats.ProjectileFireForce * Time.deltaTime;
-				float _totalRightSideFireForce = Mathf.Clamp( _rightSideFireForce, 0, _stats.ProjectileMaxFireForce );
-
-				Debug.Log( _totalRightSideFireForce );
+				FiringPointDetector.Instance.Move( _stats.ProjectileFireForce, 25f );
 			}
 
 			if( Input.GetKeyUp( _fireLeftSideKeycode ) )
 			{
-				Shoot( _leftSideFireForce, _leftSideFirePoint );
-				_leftSideFireForce = 0f;
+				firingPoint = FiringPointDetector.Instance.GetFiringPointHitPoint();
+				FiringPointDetector.Instance.ResetPos();
+
+				Shoot( _leftSideFirePoint );
 			}
 			if( Input.GetKeyUp( _fireRightSideKeycode ) )
 			{
-				Shoot( _rightSideFireForce, _rightSideFirePoint );
-				_rightSideFireForce = 0f;
+				firingPoint = FiringPointDetector.Instance.GetFiringPointHitPoint();
+				FiringPointDetector.Instance.ResetPos();
+
+				Shoot( _rightSideFirePoint );
 			}
 		}
 
-		private void Shoot( float force, Transform projectileSpawnPoint )
+		private void Shoot( Transform projectileSpawnPoint )
 		{
 			GameObject newProjectileGO = Instantiate( _projectilePrefab, projectileSpawnPoint.position, Quaternion.identity );
 
-			Quaternion q = Quaternion.FromToRotation( Vector3.up, transform.forward );
-			newProjectileGO.transform.rotation = q * projectileSpawnPoint.transform.rotation;
+			//Quaternion q = Quaternion.FromToRotation( Vector3.up, transform.forward );
+			//newProjectileGO.transform.rotation = q * projectileSpawnPoint.transform.rotation;
 
-			newProjectileGO.GetComponent<Projectile>().Initialize( force );
+			newProjectileGO.GetComponent<Projectile>().SetDestination( firingPoint );
 
 			Destroy( newProjectileGO, 15f );
 		}
