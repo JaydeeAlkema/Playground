@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &64384941
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 64384942}
+  m_Layer: 0
+  m_Name: Map Tiles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &64384942
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64384941}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &178750957
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -200,6 +231,84 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: b66d009e2428cb94795659e0fe871b31, type: 3}
+--- !u!1 &1250945072
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1250945073}
+  - component: {fileID: 1250945074}
+  m_Layer: 0
+  m_Name: Map Generator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1250945073
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250945072}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1250945074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250945072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cc50391f3223604b9812837ec0056ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seed: 123
+  generateRandomSeed: 0
+  mapWidth: 128
+  mapHeight: 128
+  noiseScale: 5
+  noiseOffset: {x: 0, y: 0}
+  tilesParent: {fileID: 64384942}
+  waterTilePrefabs:
+    list:
+    - item: {fileID: 3027279877125842960, guid: c26db914170532743baf8dd0f827ef6a,
+        type: 3}
+      weight: 10
+    - item: {fileID: 3027279877125842960, guid: de86e50de3177774192561a1e73f0975,
+        type: 3}
+      weight: 10
+    - item: {fileID: 3027279877125842960, guid: d0f37e6eeb6b28144a740b6b807e3395,
+        type: 3}
+      weight: 10
+    - item: {fileID: 3027279877125842960, guid: 9495d31694785cb469ab78c9a115f8d5,
+        type: 3}
+      weight: 2
+    - item: {fileID: 3027279877125842960, guid: fd10b9a19a127254fbffd5797a44792b,
+        type: 3}
+      weight: 2
+  lightGrassTilePrefabs:
+    list:
+    - item: {fileID: 1913806347424302840, guid: 722bb9f865a73f74e927c0141ae9e5a5,
+        type: 3}
+      weight: 10
+  darkGrassTilePrefabs:
+    list:
+    - item: {fileID: 1913806347424302840, guid: 6b99ad751c013444092c99faa4ae2d86,
+        type: 3}
+      weight: 10
 --- !u!1001 &2012895354
 PrefabInstance:
   m_ObjectHideFlags: 0
