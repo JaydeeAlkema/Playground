@@ -224,7 +224,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_5
+      name: Light Grass 2
       rect:
         serializedVersion: 2
         x: 80
@@ -308,7 +308,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Light Grass
+      name: Light Grass 1
       rect:
         serializedVersion: 2
         x: 16
@@ -392,7 +392,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_13
+      name: Light Grass 3
       rect:
         serializedVersion: 2
         x: 80
@@ -560,7 +560,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_21
+      name: Light Grass 4
       rect:
         serializedVersion: 2
         x: 80
@@ -2065,13 +2065,12 @@ TextureImporter:
       Tileset_27: -829169976
       Tileset_81: -1233503697
       Tileset_18: -64155132
-      Tileset_13: -2147478155
       Tileset_67: 1573709495
       Tileset_10: -879208221
       Tileset_14: 1861203667
-      Tileset_5: 208500256
       Tileset_46: -731285979
       Tileset_49: 1354928667
+      Light Grass 2: 208500256
       Tileset_54: 1166865711
       Tileset_22: -1883831722
       Water 1: -1738828875
@@ -2082,12 +2081,12 @@ TextureImporter:
       Tileset_12: 996803651
       Tileset_61: -1137805730
       Tileset_71: 1133919464
-      Light Grass: -735001543
       Tileset_77: -2095935085
       Tileset_28: 377311289
       Tileset_11: -230628028
       Tileset_52: 737798955
       Dark Grass: 705117183
+      Light Grass 4: 1236048332
       Tileset_19: -676798006
       Tileset_16: -103317484
       Tileset_53: -1057591724
@@ -2148,10 +2147,11 @@ TextureImporter:
       Tileset_69: -692907542
       Tileset_29: -1624989430
       Tileset_59: -1339901663
+      Light Grass 3: -2147478155
       Tileset_43: 1132473592
       Tileset_84: -1178045756
       Tileset_62: -423468974
-      Tileset_21: 1236048332
+      Light Grass 1: -735001543
       Tileset_85: -339926421
   spritePackingTag: 
   pSDRemoveMatte: 0

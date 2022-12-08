@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using UnityEngine;
@@ -22,6 +23,12 @@ public class MapGenerator : MonoBehaviour
 	[SerializeField, BoxGroup("Tile Prefabs")] private WeightedRandomList<GameObject> waterTilePrefabs = new WeightedRandomList<GameObject>();
 	[SerializeField, BoxGroup("Tile Prefabs")] private WeightedRandomList<GameObject> lightGrassTilePrefabs = new WeightedRandomList<GameObject>();
 	[SerializeField, BoxGroup("Tile Prefabs")] private WeightedRandomList<GameObject> darkGrassTilePrefabs = new WeightedRandomList<GameObject>();
+
+	[Space(10)]
+
+	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> waterTilesInScene = new List<GameObject>();
+	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> lightGrassTilesInScene = new List<GameObject>();
+	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> darkGrassTilesInScene = new List<GameObject>();
 
 	// The generated map
 	private float[,] map;
@@ -55,6 +62,9 @@ public class MapGenerator : MonoBehaviour
 	{
 		// Create an empty map
 		float[,] map = new float[mapWidth, mapHeight];
+		float randX = Random.Range(-1000, 1000);
+		float randY = Random.Range(-1000, 1000);
+		noiseOffset = new Vector2(randX, randY);
 
 		// Loop through each point on the map
 		for (int x = 0; x < mapWidth; x++)
@@ -66,7 +76,7 @@ public class MapGenerator : MonoBehaviour
 				float yCoord = (float)y / mapHeight * noiseScale + noiseOffset.y;
 
 				// Generate the Perlin noise value at this point
-				map[x, y] = Mathf.PerlinNoise(xCoord, yCoord);
+				map[x, y] = Mathf.Clamp(Mathf.PerlinNoise(xCoord, yCoord), 0, 1);
 			}
 		}
 
@@ -85,17 +95,17 @@ public class MapGenerator : MonoBehaviour
 				Vector2 newTilePosition = new Vector2(x, y);
 
 
-				if (height > 0.0f && height < 0.3f)
+				if (height >= 0.0f && height <= 0.3f)
 				{
-					Instantiate(waterTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent);
+					waterTilesInScene.Add(Instantiate(waterTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
 				}
-				else if (height > 0.3f && height < 0.7f)
+				else if (height >= 0.3f && height <= 0.7f)
 				{
-					Instantiate(lightGrassTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent);
+					lightGrassTilesInScene.Add(Instantiate(lightGrassTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
 				}
-				else if (height > 0.7f && height < 1.3f)
+				else if (height >= 0.7f && height <= 1.0f)
 				{
-					Instantiate(darkGrassTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent);
+					darkGrassTilesInScene.Add(Instantiate(darkGrassTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
 				}
 			}
 		}
@@ -114,6 +124,10 @@ public class MapGenerator : MonoBehaviour
 				DestroyImmediate(tileInScene.gameObject);
 			}
 		}
+
+		waterTilesInScene.Clear();
+		lightGrassTilesInScene.Clear();
+		darkGrassTilesInScene.Clear();
 	}
 
 	public void ClearLog()

@@ -275,12 +275,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc50391f3223604b9812837ec0056ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 123
+  seed: 1015452875
   generateRandomSeed: 0
   mapWidth: 128
   mapHeight: 128
   noiseScale: 5
-  noiseOffset: {x: 0, y: 0}
+  noiseOffset: {x: 800, y: -693}
   tilesParent: {fileID: 64384942}
   waterTilePrefabs:
     list:
@@ -304,11 +304,23 @@ MonoBehaviour:
     - item: {fileID: 1913806347424302840, guid: 722bb9f865a73f74e927c0141ae9e5a5,
         type: 3}
       weight: 10
+    - item: {fileID: 1913806347424302840, guid: ba53a7f3071f9694bb49ca4662e11b16,
+        type: 3}
+      weight: 5
+    - item: {fileID: 1913806347424302840, guid: bf0036bf819d5d942a1744b238c7fd9d,
+        type: 3}
+      weight: 5
+    - item: {fileID: 1913806347424302840, guid: 8d4e22c56cd27744fac4fc831de300a8,
+        type: 3}
+      weight: 2
   darkGrassTilePrefabs:
     list:
     - item: {fileID: 1913806347424302840, guid: 6b99ad751c013444092c99faa4ae2d86,
         type: 3}
       weight: 10
+  waterTilesInScene: []
+  lightGrassTilesInScene: []
+  darkGrassTilesInScene: []
 --- !u!1001 &2012895354
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -317,6 +329,11 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2581038481880795719, guid: 066b2f1d7fb582a4483e2fa09f15b45e,
+        type: 3}
+      propertyPath: m_Antialiasing
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -2581038481880795719, guid: 066b2f1d7fb582a4483e2fa09f15b45e,
         type: 3}
       propertyPath: m_RendererIndex
@@ -381,6 +398,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6198265952659192733, guid: 066b2f1d7fb582a4483e2fa09f15b45e,
+        type: 3}
+      propertyPath: orthographic size
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
