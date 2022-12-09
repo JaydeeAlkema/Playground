@@ -26,12 +26,20 @@ public class MapGenerator : MonoBehaviour
 
 	[Space(10)]
 
-	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> waterTilesInScene = new List<GameObject>();
-	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> lightGrassTilesInScene = new List<GameObject>();
-	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> darkGrassTilesInScene = new List<GameObject>();
+	[SerializeField, BoxGroup("Tile Prefabs")] private Transform resourcesParent = default;
+	[SerializeField, BoxGroup("Resources")] private WeightedRandomList<GameObject> largeTreePrefabs = new WeightedRandomList<GameObject>();
+	[SerializeField, BoxGroup("Resources")] private WeightedRandomList<GameObject> smallTreePrefabs = new WeightedRandomList<GameObject>();
+	[Space]
+	[SerializeField, BoxGroup("Resources")] private WeightedRandomList<GameObject> largeBushPrefabs = new WeightedRandomList<GameObject>();
+	[SerializeField, BoxGroup("Resources")] private WeightedRandomList<GameObject> smallBushPrefabs = new WeightedRandomList<GameObject>();
 
-	// The generated map
-	private float[,] map;
+	[Space(10)]
+
+	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> walkableTiles = new List<GameObject>();
+	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> unwalkableTiles = new List<GameObject>();
+	[Space]
+	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> resources = new List<GameObject>();
+
 
 	void Start()
 	{
@@ -50,8 +58,12 @@ public class MapGenerator : MonoBehaviour
 		Random.InitState(seed);
 
 		// Generate the map
-		map = GeneratePerlinNoiseMap();
-		GenerateLevelFromPerlinNoiseMap();
+		float[,] mainLevelMap = GeneratePerlinNoiseMap();
+		GenerateLevelFromPerlinNoiseMap(mainLevelMap);
+
+		// Generate the Resources
+		float[,] resourcesMap = GeneratePerlinNoiseMap();
+		GenerateLevelResources(mainLevelMap);
 
 		stopwatch.Stop();
 		Debug.Log($"<color=lime>Level Generation took {stopwatch.ElapsedMilliseconds}ms</color>");
@@ -85,27 +97,61 @@ public class MapGenerator : MonoBehaviour
 	}
 
 	// Instantiates the map tiles based on the perlin noise map
-	private void GenerateLevelFromPerlinNoiseMap()
+	private void GenerateLevelFromPerlinNoiseMap(float[,] noiseMap)
 	{
-		for (int x = 0; x < map.GetLength(0); x++)
+		for (int x = 0; x < noiseMap.GetLength(0); x++)
 		{
-			for (int y = 0; y < map.GetLength(1); y++)
+			for (int y = 0; y < noiseMap.GetLength(1); y++)
 			{
-				float height = map[x, y];
+				float height = noiseMap[x, y];
 				Vector2 newTilePosition = new Vector2(x, y);
 
 
 				if (height >= 0.0f && height <= 0.3f)
 				{
-					waterTilesInScene.Add(Instantiate(waterTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
+					unwalkableTiles.Add(Instantiate(waterTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
 				}
 				else if (height >= 0.3f && height <= 0.7f)
 				{
-					lightGrassTilesInScene.Add(Instantiate(lightGrassTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
+					walkableTiles.Add(Instantiate(lightGrassTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
 				}
 				else if (height >= 0.7f && height <= 1.0f)
 				{
-					darkGrassTilesInScene.Add(Instantiate(darkGrassTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
+					walkableTiles.Add(Instantiate(darkGrassTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
+				}
+			}
+		}
+	}
+
+	private void GenerateLevelResources(float[,] noiseMap)
+	{
+		for (int x = 0; x < noiseMap.GetLength(0); x++)
+		{
+			for (int y = 0; y < noiseMap.GetLength(1); y++)
+			{
+				float height = noiseMap[x, y];
+				Vector2 newTilePosition = new Vector2(x, y);
+
+				int spawnChance = Random.Range(0, 100);
+				Vector2 spawnOffset = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
+
+				if (spawnChance > 15) continue;
+
+				if (height >= 0.4f && height <= 0.6f)
+				{
+					int rand = Random.Range(0, 2);
+					if (rand == 0)
+						resources.Add(Instantiate(smallTreePrefabs.GetRandom(), newTilePosition + spawnOffset, Quaternion.identity, resourcesParent));
+					else
+						resources.Add(Instantiate(smallBushPrefabs.GetRandom(), newTilePosition + spawnOffset, Quaternion.identity, resourcesParent));
+				}
+				else if (height >= 0.7f && height <= 1f)
+				{
+					int rand = Random.Range(0, 2);
+					if (rand == 0)
+						resources.Add(Instantiate(largeTreePrefabs.GetRandom(), newTilePosition + spawnOffset, Quaternion.identity, resourcesParent));
+					else
+						resources.Add(Instantiate(largeBushPrefabs.GetRandom(), newTilePosition + spawnOffset, Quaternion.identity, resourcesParent));
 				}
 			}
 		}
@@ -119,15 +165,24 @@ public class MapGenerator : MonoBehaviour
 		Transform[] tilesInScene = tilesParent.GetComponentsInChildren<Transform>();
 		foreach (Transform tileInScene in tilesInScene)
 		{
-			if (tileInScene != tilesParent)
+			if (tileInScene != tilesParent && tileInScene != null)
 			{
 				DestroyImmediate(tileInScene.gameObject);
 			}
 		}
 
-		waterTilesInScene.Clear();
-		lightGrassTilesInScene.Clear();
-		darkGrassTilesInScene.Clear();
+		Transform[] resourcesInScene = resourcesParent.GetComponentsInChildren<Transform>();
+		foreach (Transform resourceInScene in resourcesInScene)
+		{
+			if (resourceInScene != resourcesParent && resourceInScene != null)
+			{
+				DestroyImmediate(resourceInScene.gameObject);
+			}
+		}
+
+		unwalkableTiles.Clear();
+		walkableTiles.Clear();
+		resources.Clear();
 	}
 
 	public void ClearLog()

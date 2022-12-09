@@ -126,8 +126,8 @@ TextureImporter:
         y: 225
         width: 35
         height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.52457774, y: 0.30884072}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -168,8 +168,8 @@ TextureImporter:
         y: 233
         width: 16
         height: 14
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.4820795, y: 0.56144387}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -294,8 +294,8 @@ TextureImporter:
         y: 196
         width: 31
         height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5092498, y: 0.20179199}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -462,8 +462,8 @@ TextureImporter:
         y: 164
         width: 14
         height: 22
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5204811, y: 0.25236234}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -483,8 +483,8 @@ TextureImporter:
         y: 164
         width: 14
         height: 22
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.50000054, y: 0.2132617}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -651,8 +651,8 @@ TextureImporter:
         y: 134
         width: 14
         height: 20
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5204811, y: 0.2706085}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -672,8 +672,8 @@ TextureImporter:
         y: 134
         width: 14
         height: 20
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.50000054, y: 0.21326141}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -812,15 +812,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Decorations_33
+      name: Tree Large 1
       rect:
         serializedVersion: 2
         x: 11
         y: 15
         width: 70
         height: 98
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.49590394, y: 0.15474352}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -833,15 +833,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Decorations_34
+      name: Tree Large 2
       rect:
         serializedVersion: 2
         x: 88
         y: 19
         width: 70
         height: 94
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.49590388, y: 0.12479965}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -917,15 +917,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Decorations_38
+      name: Tree Small 1
       rect:
         serializedVersion: 2
         x: 163
         y: 19
         width: 38
         height: 74
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5301831, y: 0.15513879}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -938,15 +938,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Decorations_39
+      name: Tree Small 2
       rect:
         serializedVersion: 2
         x: 211
         y: 23
         width: 38
         height: 70
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5226376, y: 0.11085502}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -970,10 +970,13 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Bush Small 1: 362920112
+      Tree Small 2: 1635792945
       Decorations_17: -347192325
       Log 1: -408077465
+      Tree Large 2: -19620433
       Decorations_12: 567028552
       Decorations_31: -527923434
+      Tree Large 1: 245589812
       Bush Large 1: -36248058
       Decorations_5: 19212505
       Bush Large 2: 1805021642
@@ -982,7 +985,6 @@ TextureImporter:
       Decorations_35: -1983013463
       Decorations_21: 1250431070
       Decorations_28: -1037698413
-      Decorations_39: 1635792945
       Decorations_11: -1741643390
       Bush Small 2: -2041112606
       Decorations_29: -2134344046
@@ -990,14 +992,13 @@ TextureImporter:
       Decorations_3: 1488147874
       Decorations_23: 996294153
       Decorations_30: 331612153
-      Decorations_33: 245589812
       Log 2: 1575383927
       Decorations_32: 1377660778
       Decorations_15: 1768341057
       Decorations_4: 588995346
       Decorations_7: 2106264436
       Decorations_16: 1265350001
-      Decorations_34: -19620433
+      Tree Small 1: 1944980074
       Decorations_24: 1621938324
       Decorations_25: 661518545
       Decorations_26: -1055197836
@@ -1008,7 +1009,6 @@ TextureImporter:
       Decorations_18: -231945764
       Decorations_22: 31955642
       Decorations_36: 599891738
-      Decorations_38: 1944980074
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 
