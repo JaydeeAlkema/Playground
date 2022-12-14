@@ -7,38 +7,25 @@ using Debug = UnityEngine.Debug;
 
 public class MapGenerator : MonoBehaviour
 {
-	[SerializeField, BoxGroup("Generator Settings")] private int seed = 0;
-	[SerializeField, BoxGroup("Generator Settings")] private bool generateRandomSeed = false;
+	[SerializeField, Foldout("Generator Settings")] private int seed = 0;
+	[SerializeField, Foldout("Generator Settings")] private bool generateRandomSeed = false;
 	[Space]
-	[SerializeField, BoxGroup("Generator Settings")] private int mapWidth = 100;
-	[SerializeField, BoxGroup("Generator Settings")] private int mapHeight = 100;
+	[SerializeField, Foldout("Generator Settings")] private int mapWidth = 100;
+	[SerializeField, Foldout("Generator Settings")] private int mapHeight = 100;
 	[Space]
-	[SerializeField, BoxGroup("Generator Settings")] private float noiseScale = 1.0f;
+	[SerializeField, Foldout("Generator Settings")] private float noiseScale = 1.0f;
 	[Space]
-	[SerializeField, BoxGroup("Generator Settings")] private Vector2 noiseOffset;
+	[SerializeField, Foldout("Generator Settings")] private Vector2 noiseOffset;
 
-	[Space(10)]
-
-	[SerializeField, BoxGroup("Tile Prefabs")] private Transform tilesParent = default;
-	[SerializeField, BoxGroup("Tile Prefabs")] private WeightedRandomList<GameObject> waterTilePrefabs = new WeightedRandomList<GameObject>();
-	[SerializeField, BoxGroup("Tile Prefabs")] private WeightedRandomList<GameObject> lightGrassTilePrefabs = new WeightedRandomList<GameObject>();
-	[SerializeField, BoxGroup("Tile Prefabs")] private WeightedRandomList<GameObject> darkGrassTilePrefabs = new WeightedRandomList<GameObject>();
-
-	[Space(10)]
-
-	[SerializeField, BoxGroup("Tile Prefabs")] private Transform resourcesParent = default;
-	[SerializeField, BoxGroup("Resources")] private WeightedRandomList<GameObject> largeTreePrefabs = new WeightedRandomList<GameObject>();
-	[SerializeField, BoxGroup("Resources")] private WeightedRandomList<GameObject> smallTreePrefabs = new WeightedRandomList<GameObject>();
+	[SerializeField, Foldout("Tile Prefabs")] private Transform tilesParent = default;
+	[SerializeField, Foldout("Tile Prefabs")] private List<TerrainLevel> terrains = new List<TerrainLevel>();
 	[Space]
-	[SerializeField, BoxGroup("Resources")] private WeightedRandomList<GameObject> largeBushPrefabs = new WeightedRandomList<GameObject>();
-	[SerializeField, BoxGroup("Resources")] private WeightedRandomList<GameObject> smallBushPrefabs = new WeightedRandomList<GameObject>();
+	[SerializeField, Foldout("Tile Prefabs")] private Transform resourcesParent = default;
+	[SerializeField, Foldout("Tile Prefabs")] private List<Resource> resources = new List<Resource>();
 
-	[Space(10)]
-
-	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> walkableTiles = new List<GameObject>();
-	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> unwalkableTiles = new List<GameObject>();
+	[SerializeField, Foldout("Runtime References")] private List<GameObject> tilesInScene = new List<GameObject>();
 	[Space]
-	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> resources = new List<GameObject>();
+	[SerializeField, Foldout("Runtime References")] private List<GameObject> resourcesInScene = new List<GameObject>();
 
 
 	void Start()
@@ -61,10 +48,6 @@ public class MapGenerator : MonoBehaviour
 		float[,] mainLevelMap = GeneratePerlinNoiseMap();
 		GenerateLevelFromPerlinNoiseMap(mainLevelMap);
 
-		// Generate the Resources
-		float[,] resourcesMap = GeneratePerlinNoiseMap();
-		GenerateLevelResources(mainLevelMap);
-
 		stopwatch.Stop();
 		Debug.Log($"<color=lime>Level Generation took {stopwatch.ElapsedMilliseconds}ms</color>");
 	}
@@ -74,9 +57,6 @@ public class MapGenerator : MonoBehaviour
 	{
 		// Create an empty map
 		float[,] map = new float[mapWidth, mapHeight];
-		float randX = Random.Range(-1000, 1000);
-		float randY = Random.Range(-1000, 1000);
-		noiseOffset = new Vector2(randX, randY);
 
 		// Loop through each point on the map
 		for (int x = 0; x < mapWidth; x++)
@@ -103,55 +83,31 @@ public class MapGenerator : MonoBehaviour
 		{
 			for (int y = 0; y < noiseMap.GetLength(1); y++)
 			{
+				// Spawn map Terrain Tiles
 				float height = noiseMap[x, y];
 				Vector2 newTilePosition = new Vector2(x, y);
-
-
-				if (height >= 0.0f && height <= 0.3f)
+				foreach (TerrainLevel terrain in terrains)
 				{
-					unwalkableTiles.Add(Instantiate(waterTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
+					if (height >= terrain.heightMin && height <= terrain.heightMax)
+					{
+						tilesInScene.Add(Instantiate(terrain.prefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
+					}
 				}
-				else if (height >= 0.3f && height <= 0.7f)
-				{
-					walkableTiles.Add(Instantiate(lightGrassTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
-				}
-				else if (height >= 0.7f && height <= 1.0f)
-				{
-					walkableTiles.Add(Instantiate(darkGrassTilePrefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
-				}
-			}
-		}
-	}
 
-	private void GenerateLevelResources(float[,] noiseMap)
-	{
-		for (int x = 0; x < noiseMap.GetLength(0); x++)
-		{
-			for (int y = 0; y < noiseMap.GetLength(1); y++)
-			{
-				float height = noiseMap[x, y];
-				Vector2 newTilePosition = new Vector2(x, y);
+				if (x % 2 == 1 || y % 2 == 1) continue;
 
+				// Spawn map Resources
 				int spawnChance = Random.Range(0, 100);
 				Vector2 spawnOffset = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
 
-				if (spawnChance > 15) continue;
+				if (spawnChance > 75) continue;
 
-				if (height >= 0.4f && height <= 0.6f)
+				foreach (Resource resource in resources)
 				{
-					int rand = Random.Range(0, 2);
-					if (rand == 0)
-						resources.Add(Instantiate(smallTreePrefabs.GetRandom(), newTilePosition + spawnOffset, Quaternion.identity, resourcesParent));
-					else
-						resources.Add(Instantiate(smallBushPrefabs.GetRandom(), newTilePosition + spawnOffset, Quaternion.identity, resourcesParent));
-				}
-				else if (height >= 0.7f && height <= 1f)
-				{
-					int rand = Random.Range(0, 2);
-					if (rand == 0)
-						resources.Add(Instantiate(largeTreePrefabs.GetRandom(), newTilePosition + spawnOffset, Quaternion.identity, resourcesParent));
-					else
-						resources.Add(Instantiate(largeBushPrefabs.GetRandom(), newTilePosition + spawnOffset, Quaternion.identity, resourcesParent));
+					if (height >= resource.heightMin && height <= resource.heightMax)
+					{
+						resourcesInScene.Add(Instantiate(resource.prefabs.GetRandom(), newTilePosition + spawnOffset, Quaternion.identity, resourcesParent));
+					}
 				}
 			}
 		}
@@ -162,8 +118,7 @@ public class MapGenerator : MonoBehaviour
 	private void CleanUp()
 	{
 		ClearLog();
-		Transform[] tilesInScene = tilesParent.GetComponentsInChildren<Transform>();
-		foreach (Transform tileInScene in tilesInScene)
+		foreach (Transform tileInScene in tilesParent.GetComponentsInChildren<Transform>())
 		{
 			if (tileInScene != tilesParent && tileInScene != null)
 			{
@@ -171,8 +126,7 @@ public class MapGenerator : MonoBehaviour
 			}
 		}
 
-		Transform[] resourcesInScene = resourcesParent.GetComponentsInChildren<Transform>();
-		foreach (Transform resourceInScene in resourcesInScene)
+		foreach (Transform resourceInScene in resourcesParent.GetComponentsInChildren<Transform>())
 		{
 			if (resourceInScene != resourcesParent && resourceInScene != null)
 			{
@@ -180,11 +134,11 @@ public class MapGenerator : MonoBehaviour
 			}
 		}
 
-		unwalkableTiles.Clear();
-		walkableTiles.Clear();
-		resources.Clear();
+		tilesInScene.Clear();
+		resourcesInScene.Clear();
 	}
 
+	// Clears the Unity Editor Console
 	public void ClearLog()
 	{
 #if UNITY_EDITOR
@@ -194,4 +148,21 @@ public class MapGenerator : MonoBehaviour
 		method.Invoke(new object(), null);
 #endif
 	}
+}
+
+[System.Serializable]
+public struct TerrainLevel
+{
+	public string name;
+	public float heightMin;
+	public float heightMax;
+	public WeightedRandomList<GameObject> prefabs;
+}
+[System.Serializable]
+public struct Resource
+{
+	public string name;
+	public float heightMin;
+	public float heightMax;
+	public WeightedRandomList<GameObject> prefabs;
 }

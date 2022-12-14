@@ -417,73 +417,85 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc50391f3223604b9812837ec0056ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 868474353
-  generateRandomSeed: 1
-  mapWidth: 128
-  mapHeight: 128
-  noiseScale: 5
-  noiseOffset: {x: 880, y: 751}
+  seed: 1180359186
+  generateRandomSeed: 0
+  mapWidth: 64
+  mapHeight: 64
+  noiseScale: 4.5
+  noiseOffset: {x: 0, y: 0}
   tilesParent: {fileID: 64384942}
-  waterTilePrefabs:
-    list:
-    - item: {fileID: 3027279877125842960, guid: c26db914170532743baf8dd0f827ef6a,
-        type: 3}
-      weight: 10
-    - item: {fileID: 3027279877125842960, guid: de86e50de3177774192561a1e73f0975,
-        type: 3}
-      weight: 10
-    - item: {fileID: 3027279877125842960, guid: d0f37e6eeb6b28144a740b6b807e3395,
-        type: 3}
-      weight: 10
-    - item: {fileID: 3027279877125842960, guid: 9495d31694785cb469ab78c9a115f8d5,
-        type: 3}
-      weight: 2
-    - item: {fileID: 3027279877125842960, guid: fd10b9a19a127254fbffd5797a44792b,
-        type: 3}
-      weight: 2
-  lightGrassTilePrefabs:
-    list:
-    - item: {fileID: 1913806347424302840, guid: 722bb9f865a73f74e927c0141ae9e5a5,
-        type: 3}
-      weight: 10
-    - item: {fileID: 1913806347424302840, guid: ba53a7f3071f9694bb49ca4662e11b16,
-        type: 3}
-      weight: 5
-    - item: {fileID: 1913806347424302840, guid: bf0036bf819d5d942a1744b238c7fd9d,
-        type: 3}
-      weight: 5
-    - item: {fileID: 1913806347424302840, guid: 8d4e22c56cd27744fac4fc831de300a8,
-        type: 3}
-      weight: 2
-  darkGrassTilePrefabs:
-    list:
-    - item: {fileID: 1913806347424302840, guid: 6b99ad751c013444092c99faa4ae2d86,
-        type: 3}
-      weight: 10
+  terrains:
+  - name: Water
+    heightMin: 0
+    heightMax: 0.3
+    prefabs:
+      list:
+      - item: {fileID: 3027279877125842960, guid: c26db914170532743baf8dd0f827ef6a,
+          type: 3}
+        weight: 10
+      - item: {fileID: 3027279877125842960, guid: de86e50de3177774192561a1e73f0975,
+          type: 3}
+        weight: 10
+      - item: {fileID: 3027279877125842960, guid: d0f37e6eeb6b28144a740b6b807e3395,
+          type: 3}
+        weight: 5
+      - item: {fileID: 3027279877125842960, guid: 9495d31694785cb469ab78c9a115f8d5,
+          type: 3}
+        weight: 2
+      - item: {fileID: 3027279877125842960, guid: fd10b9a19a127254fbffd5797a44792b,
+          type: 3}
+        weight: 2
+  - name: Light Grass
+    heightMin: 0.3
+    heightMax: 0.7
+    prefabs:
+      list:
+      - item: {fileID: 1913806347424302840, guid: 722bb9f865a73f74e927c0141ae9e5a5,
+          type: 3}
+        weight: 10
+      - item: {fileID: 1913806347424302840, guid: ba53a7f3071f9694bb49ca4662e11b16,
+          type: 3}
+        weight: 8
+      - item: {fileID: 1913806347424302840, guid: bf0036bf819d5d942a1744b238c7fd9d,
+          type: 3}
+        weight: 8
+      - item: {fileID: 1913806347424302840, guid: 8d4e22c56cd27744fac4fc831de300a8,
+          type: 3}
+        weight: 5
+  - name: Dark Grass
+    heightMin: 0.7
+    heightMax: 1
+    prefabs:
+      list:
+      - item: {fileID: 1913806347424302840, guid: 6b99ad751c013444092c99faa4ae2d86,
+          type: 3}
+        weight: 10
   resourcesParent: {fileID: 969969217}
-  largeTreePrefabs:
-    list:
-    - item: {fileID: 7320898370652018828, guid: e29530ed99ebe1240abeb10ee67b50f2,
-        type: 3}
-      weight: 0
-  smallTreePrefabs:
-    list:
-    - item: {fileID: 7320898370652018828, guid: 54850fbb22c4e46429fa3aaba0f4a928,
-        type: 3}
-      weight: 0
-  largeBushPrefabs:
-    list:
-    - item: {fileID: 7320898370652018828, guid: 9cd25be87fb5beb448bcca659791fa6d,
-        type: 3}
-      weight: 0
-  smallBushPrefabs:
-    list:
-    - item: {fileID: 7320898370652018828, guid: 9f21a64608774ed47a093ada6cae4a40,
-        type: 3}
-      weight: 0
-  walkableTiles: []
-  unwalkableTiles: []
-  resources: []
+  resources:
+  - name: Lowland Resources
+    heightMin: 0.35
+    heightMax: 0.7
+    prefabs:
+      list:
+      - item: {fileID: 7320898370652018828, guid: 54850fbb22c4e46429fa3aaba0f4a928,
+          type: 3}
+        weight: 10
+      - item: {fileID: 7320898370652018828, guid: 9f21a64608774ed47a093ada6cae4a40,
+          type: 3}
+        weight: 5
+  - name: Highland Resources
+    heightMin: 0.7
+    heightMax: 1
+    prefabs:
+      list:
+      - item: {fileID: 7320898370652018828, guid: e29530ed99ebe1240abeb10ee67b50f2,
+          type: 3}
+        weight: 10
+      - item: {fileID: 7320898370652018828, guid: 9cd25be87fb5beb448bcca659791fa6d,
+          type: 3}
+        weight: 5
+  tilesInScene: []
+  resourcesInScene: []
 --- !u!1001 &2012895354
 PrefabInstance:
   m_ObjectHideFlags: 0
