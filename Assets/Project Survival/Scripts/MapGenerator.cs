@@ -7,26 +7,28 @@ using Debug = UnityEngine.Debug;
 
 public class MapGenerator : MonoBehaviour
 {
-	[SerializeField, Foldout("Generator Settings")] private int seed = 0;
-	[SerializeField, Foldout("Generator Settings")] private bool generateRandomSeed = false;
+	[SerializeField, BoxGroup("Generator Settings")] private int seed = 0;
+	[SerializeField, BoxGroup("Generator Settings")] private bool generateRandomSeed = false;
 	[Space]
-	[SerializeField, Foldout("Generator Settings")] private int mapWidth = 100;
-	[SerializeField, Foldout("Generator Settings")] private int mapHeight = 100;
+	[SerializeField, BoxGroup("Generator Settings")] private int mapWidth = 10;
+	[SerializeField, BoxGroup("Generator Settings")] private int mapHeight = 10;
 	[Space]
-	[SerializeField, Foldout("Generator Settings")] private float noiseScale = 1.0f;
+	[SerializeField, BoxGroup("Generator Settings")] private int chunkWidth = 25;
+	[SerializeField, BoxGroup("Generator Settings")] private int chunkHeight = 25;
 	[Space]
-	[SerializeField, Foldout("Generator Settings")] private Vector2 noiseOffset;
+	[SerializeField, BoxGroup("Generator Settings")] private float noiseScale = 1.0f;
+	[Space]
+	[SerializeField, BoxGroup("Generator Settings")] private Vector2 noiseOffset;
 
-	[SerializeField, Foldout("Tile Prefabs")] private Transform tilesParent = default;
-	[SerializeField, Foldout("Tile Prefabs")] private List<TerrainLevel> terrains = new List<TerrainLevel>();
+	[SerializeField, BoxGroup("Tile Prefabs")] private Transform chunksParent = default;
+	[SerializeField, BoxGroup("Tile Prefabs")] private List<TerrainLevel> terrains = new List<TerrainLevel>();
 	[Space]
-	[SerializeField, Foldout("Tile Prefabs")] private Transform resourcesParent = default;
-	[SerializeField, Foldout("Tile Prefabs")] private List<Resource> resources = new List<Resource>();
+	[SerializeField, BoxGroup("Tile Prefabs")] private Transform resourceChunksParent = default;
+	[SerializeField, BoxGroup("Tile Prefabs")] private List<Resource> resources = new List<Resource>();
 
-	[SerializeField, Foldout("Runtime References")] private List<GameObject> tilesInScene = new List<GameObject>();
+	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> tilesInScene = new List<GameObject>();
 	[Space]
-	[SerializeField, Foldout("Runtime References")] private List<GameObject> resourcesInScene = new List<GameObject>();
-
+	[SerializeField, BoxGroup("Runtime References")] private List<GameObject> resourcesInScene = new List<GameObject>();
 
 	void Start()
 	{
@@ -44,9 +46,25 @@ public class MapGenerator : MonoBehaviour
 		if (generateRandomSeed) seed = Random.Range(0, int.MaxValue);
 		Random.InitState(seed);
 
+		noiseOffset = new Vector2(0, 0);
 		// Generate the map
-		float[,] mainLevelMap = GeneratePerlinNoiseMap();
-		GenerateLevelFromPerlinNoiseMap(mainLevelMap);
+		for (int x = 0; x < mapWidth; x++)
+		{
+			for (int y = 0; y < mapHeight; y++)
+			{
+				GameObject chunkParent = new GameObject($"Chunk[{x}][{y}]");
+				chunkParent.transform.position = new Vector3(x * chunkWidth, y * chunkHeight, 0);
+				chunkParent.transform.parent = chunksParent.transform;
+
+				GameObject resourceChunkParent = new GameObject($"Resource Chunk[{x}][{y}]");
+				resourceChunkParent.transform.position = new Vector3(x * chunkWidth, y * chunkHeight, 0);
+				resourceChunkParent.transform.parent = resourceChunksParent.transform;
+
+				float[,] mainLevelMap = GeneratePerlinNoiseMap();
+				GenerateChunkFromPerlinNoiseMap(mainLevelMap, chunkParent.transform, resourceChunkParent.transform);
+				noiseOffset = new Vector2(x, y);
+			}
+		}
 
 		stopwatch.Stop();
 		Debug.Log($"<color=lime>Level Generation took {stopwatch.ElapsedMilliseconds}ms</color>");
@@ -56,16 +74,16 @@ public class MapGenerator : MonoBehaviour
 	private float[,] GeneratePerlinNoiseMap()
 	{
 		// Create an empty map
-		float[,] map = new float[mapWidth, mapHeight];
+		float[,] map = new float[chunkWidth, chunkHeight];
 
 		// Loop through each point on the map
-		for (int x = 0; x < mapWidth; x++)
+		for (int x = 0; x < chunkWidth; x++)
 		{
-			for (int y = 0; y < mapHeight; y++)
+			for (int y = 0; y < chunkHeight; y++)
 			{
 				// Calculate the x and y coordinates of this point in the noise space
-				float xCoord = (float)x / mapWidth * noiseScale + noiseOffset.x;
-				float yCoord = (float)y / mapHeight * noiseScale + noiseOffset.y;
+				float xCoord = (float)x / chunkWidth * noiseScale + noiseOffset.x;
+				float yCoord = (float)y / chunkHeight * noiseScale + noiseOffset.y;
 
 				// Generate the Perlin noise value at this point
 				map[x, y] = Mathf.Clamp(Mathf.PerlinNoise(xCoord, yCoord), 0, 1);
@@ -77,7 +95,7 @@ public class MapGenerator : MonoBehaviour
 	}
 
 	// Instantiates the map tiles based on the perlin noise map
-	private void GenerateLevelFromPerlinNoiseMap(float[,] noiseMap)
+	private void GenerateChunkFromPerlinNoiseMap(float[,] noiseMap, Transform terrainParent, Transform resourcesParent)
 	{
 		for (int x = 0; x < noiseMap.GetLength(0); x++)
 		{
@@ -85,29 +103,27 @@ public class MapGenerator : MonoBehaviour
 			{
 				// Spawn map Terrain Tiles
 				float height = noiseMap[x, y];
-				Vector2 newTilePosition = new Vector2(x, y);
+				Vector2 newTilePosition = new Vector2(terrainParent.position.x + x, terrainParent.position.y + y);
 				foreach (TerrainLevel terrain in terrains)
 				{
-					if (height >= terrain.heightMin && height <= terrain.heightMax)
-					{
-						tilesInScene.Add(Instantiate(terrain.prefabs.GetRandom(), newTilePosition, Quaternion.identity, tilesParent));
-					}
+					if (height < terrain.heightMin || height > terrain.heightMax) continue;
+
+					tilesInScene.Add(Instantiate(terrain.prefabs.GetRandom(), newTilePosition, Quaternion.identity, terrainParent));
 				}
 
 				if (x % 2 == 1 || y % 2 == 1) continue;
 
 				// Spawn map Resources
 				int spawnChance = Random.Range(0, 100);
-				Vector2 spawnOffset = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
+				Vector2 spawnOffset = new Vector2(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f));
 
 				if (spawnChance > 75) continue;
 
 				foreach (Resource resource in resources)
 				{
-					if (height >= resource.heightMin && height <= resource.heightMax)
-					{
-						resourcesInScene.Add(Instantiate(resource.prefabs.GetRandom(), newTilePosition + spawnOffset, Quaternion.identity, resourcesParent));
-					}
+					if (height < resource.heightMin || height > resource.heightMax) continue;
+
+					resourcesInScene.Add(Instantiate(resource.prefabs.GetRandom(), newTilePosition + spawnOffset, Quaternion.identity, resourcesParent));
 				}
 			}
 		}
@@ -118,17 +134,17 @@ public class MapGenerator : MonoBehaviour
 	private void CleanUp()
 	{
 		ClearLog();
-		foreach (Transform tileInScene in tilesParent.GetComponentsInChildren<Transform>())
+		foreach (Transform tileInScene in chunksParent.GetComponentsInChildren<Transform>())
 		{
-			if (tileInScene != tilesParent && tileInScene != null)
+			if (tileInScene != chunksParent && tileInScene != null)
 			{
 				DestroyImmediate(tileInScene.gameObject);
 			}
 		}
 
-		foreach (Transform resourceInScene in resourcesParent.GetComponentsInChildren<Transform>())
+		foreach (Transform resourceInScene in resourceChunksParent.GetComponentsInChildren<Transform>())
 		{
-			if (resourceInScene != resourcesParent && resourceInScene != null)
+			if (resourceInScene != resourceChunksParent && resourceInScene != null)
 			{
 				DestroyImmediate(resourceInScene.gameObject);
 			}

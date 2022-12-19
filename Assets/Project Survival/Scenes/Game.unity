@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 64384942}
   m_Layer: 0
-  m_Name: Map
+  m_Name: Chunks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -352,7 +352,7 @@ GameObject:
   m_Component:
   - component: {fileID: 969969217}
   m_Layer: 0
-  m_Name: Resoures
+  m_Name: Resource Chunks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -417,13 +417,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc50391f3223604b9812837ec0056ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 1180359186
-  generateRandomSeed: 0
-  mapWidth: 64
-  mapHeight: 64
-  noiseScale: 4.5
-  noiseOffset: {x: 0, y: 0}
-  tilesParent: {fileID: 64384942}
+  seed: 1136189254
+  generateRandomSeed: 1
+  mapWidth: 5
+  mapHeight: 5
+  chunkWidth: 25
+  chunkHeight: 25
+  noiseScale: 1
+  noiseOffset: {x: 99, y: 9}
+  chunksParent: {fileID: 64384942}
   terrains:
   - name: Water
     heightMin: 0
@@ -470,7 +472,7 @@ MonoBehaviour:
       - item: {fileID: 1913806347424302840, guid: 6b99ad751c013444092c99faa4ae2d86,
           type: 3}
         weight: 10
-  resourcesParent: {fileID: 969969217}
+  resourceChunksParent: {fileID: 969969217}
   resources:
   - name: Lowland Resources
     heightMin: 0.35
@@ -482,7 +484,7 @@ MonoBehaviour:
         weight: 10
       - item: {fileID: 7320898370652018828, guid: 9f21a64608774ed47a093ada6cae4a40,
           type: 3}
-        weight: 5
+        weight: 10
   - name: Highland Resources
     heightMin: 0.7
     heightMax: 1
@@ -493,7 +495,7 @@ MonoBehaviour:
         weight: 10
       - item: {fileID: 7320898370652018828, guid: 9cd25be87fb5beb448bcca659791fa6d,
           type: 3}
-        weight: 5
+        weight: 10
   tilesInScene: []
   resourcesInScene: []
 --- !u!1001 &2012895354
