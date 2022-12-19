@@ -46,7 +46,8 @@ public class MapGenerator : MonoBehaviour
 		if (generateRandomSeed) seed = Random.Range(0, int.MaxValue);
 		Random.InitState(seed);
 
-		noiseOffset = new Vector2(0, 0);
+
+		Vector2 startNoiseOffset = new Vector2(Random.Range(0, 1000), Random.Range(0, 1000));
 		// Generate the map
 		for (int x = 0; x < mapWidth; x++)
 		{
@@ -60,9 +61,9 @@ public class MapGenerator : MonoBehaviour
 				resourceChunkParent.transform.position = new Vector3(x * chunkWidth, y * chunkHeight, 0);
 				resourceChunkParent.transform.parent = resourceChunksParent.transform;
 
+				noiseOffset = new Vector2(startNoiseOffset.x + x, startNoiseOffset.y + y);
 				float[,] mainLevelMap = GeneratePerlinNoiseMap();
 				GenerateChunkFromPerlinNoiseMap(mainLevelMap, chunkParent.transform, resourceChunkParent.transform);
-				noiseOffset = new Vector2(x, y);
 			}
 		}
 
@@ -115,7 +116,7 @@ public class MapGenerator : MonoBehaviour
 
 				// Spawn map Resources
 				int spawnChance = Random.Range(0, 100);
-				Vector2 spawnOffset = new Vector2(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f));
+				Vector2 spawnOffset = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
 
 				if (spawnChance > 75) continue;
 

@@ -417,14 +417,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc50391f3223604b9812837ec0056ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 1136189254
-  generateRandomSeed: 1
+  seed: 1589081542
+  generateRandomSeed: 0
   mapWidth: 5
   mapHeight: 5
   chunkWidth: 25
   chunkHeight: 25
   noiseScale: 1
-  noiseOffset: {x: 99, y: 9}
+  noiseOffset: {x: 796, y: 295}
   chunksParent: {fileID: 64384942}
   terrains:
   - name: Water
@@ -447,9 +447,17 @@ MonoBehaviour:
       - item: {fileID: 3027279877125842960, guid: fd10b9a19a127254fbffd5797a44792b,
           type: 3}
         weight: 2
-  - name: Light Grass
+  - name: Dark Grass
     heightMin: 0.3
-    heightMax: 0.7
+    heightMax: 0.5
+    prefabs:
+      list:
+      - item: {fileID: 1913806347424302840, guid: 6b99ad751c013444092c99faa4ae2d86,
+          type: 3}
+        weight: 10
+  - name: Light Grass
+    heightMin: 0.5
+    heightMax: 1
     prefabs:
       list:
       - item: {fileID: 1913806347424302840, guid: 722bb9f865a73f74e927c0141ae9e5a5,
@@ -464,19 +472,11 @@ MonoBehaviour:
       - item: {fileID: 1913806347424302840, guid: 8d4e22c56cd27744fac4fc831de300a8,
           type: 3}
         weight: 5
-  - name: Dark Grass
-    heightMin: 0.7
-    heightMax: 1
-    prefabs:
-      list:
-      - item: {fileID: 1913806347424302840, guid: 6b99ad751c013444092c99faa4ae2d86,
-          type: 3}
-        weight: 10
   resourceChunksParent: {fileID: 969969217}
   resources:
   - name: Lowland Resources
-    heightMin: 0.35
-    heightMax: 0.7
+    heightMin: 0.32
+    heightMax: 0.45
     prefabs:
       list:
       - item: {fileID: 7320898370652018828, guid: 54850fbb22c4e46429fa3aaba0f4a928,
@@ -486,14 +486,17 @@ MonoBehaviour:
           type: 3}
         weight: 10
   - name: Highland Resources
-    heightMin: 0.7
+    heightMin: 0.45
     heightMax: 1
     prefabs:
       list:
       - item: {fileID: 7320898370652018828, guid: e29530ed99ebe1240abeb10ee67b50f2,
           type: 3}
-        weight: 10
+        weight: 5
       - item: {fileID: 7320898370652018828, guid: 9cd25be87fb5beb448bcca659791fa6d,
+          type: 3}
+        weight: 10
+      - item: {fileID: 7320898370652018828, guid: 9f21a64608774ed47a093ada6cae4a40,
           type: 3}
         weight: 10
   tilesInScene: []
