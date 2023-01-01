@@ -46,6 +46,15 @@ namespace Project_Platformer
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""1a3d1567-5d2a-49e7-9779-ba4f585ce37a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -136,6 +145,28 @@ namespace Project_Platformer
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57672307-414a-4a68-847a-5daaf7112a11"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""101f26f7-1914-4077-904a-d3c420a4d8c7"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -179,6 +210,7 @@ namespace Project_Platformer
             m_PlayerMovement = asset.FindActionMap("Player Movement", throwIfNotFound: true);
             m_PlayerMovement_GroundedMove = m_PlayerMovement.FindAction("Grounded Move", throwIfNotFound: true);
             m_PlayerMovement_Jump = m_PlayerMovement.FindAction("Jump", throwIfNotFound: true);
+            m_PlayerMovement_Attack = m_PlayerMovement.FindAction("Attack", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -240,12 +272,14 @@ namespace Project_Platformer
         private IPlayerMovementActions m_PlayerMovementActionsCallbackInterface;
         private readonly InputAction m_PlayerMovement_GroundedMove;
         private readonly InputAction m_PlayerMovement_Jump;
+        private readonly InputAction m_PlayerMovement_Attack;
         public struct PlayerMovementActions
         {
             private @ProjectPlatformerControls m_Wrapper;
             public PlayerMovementActions(@ProjectPlatformerControls wrapper) { m_Wrapper = wrapper; }
             public InputAction @GroundedMove => m_Wrapper.m_PlayerMovement_GroundedMove;
             public InputAction @Jump => m_Wrapper.m_PlayerMovement_Jump;
+            public InputAction @Attack => m_Wrapper.m_PlayerMovement_Attack;
             public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -261,6 +295,9 @@ namespace Project_Platformer
                     @Jump.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnJump;
                     @Jump.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnJump;
                     @Jump.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnJump;
+                    @Attack.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnAttack;
+                    @Attack.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnAttack;
+                    @Attack.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnAttack;
                 }
                 m_Wrapper.m_PlayerMovementActionsCallbackInterface = instance;
                 if (instance != null)
@@ -271,6 +308,9 @@ namespace Project_Platformer
                     @Jump.started += instance.OnJump;
                     @Jump.performed += instance.OnJump;
                     @Jump.canceled += instance.OnJump;
+                    @Attack.started += instance.OnAttack;
+                    @Attack.performed += instance.OnAttack;
+                    @Attack.canceled += instance.OnAttack;
                 }
             }
         }
@@ -297,6 +337,7 @@ namespace Project_Platformer
         {
             void OnGroundedMove(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
+            void OnAttack(InputAction.CallbackContext context);
         }
     }
 }

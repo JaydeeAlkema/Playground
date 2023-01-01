@@ -33,6 +33,9 @@ namespace Project_Platformer
 
 			projectPlatformerInputActions.PlayerMovement.Jump.started += Jump;
 			projectPlatformerInputActions.PlayerMovement.Jump.Enable();
+
+			projectPlatformerInputActions.PlayerMovement.Attack.started += Attack;
+			projectPlatformerInputActions.PlayerMovement.Attack.Enable();
 		}
 		private void OnDisable()
 		{
@@ -57,6 +60,10 @@ namespace Project_Platformer
 		{
 			if (!IsGrounded()) return;
 			rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
+		}
+		private void Attack(InputAction.CallbackContext context)
+		{
+			animator.SetTrigger("Attack");
 		}
 		#endregion
 
