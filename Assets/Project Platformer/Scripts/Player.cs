@@ -6,24 +6,23 @@ namespace Project_Platformer
 {
 	public class Player : MonoBehaviour
 	{
-		[SerializeField, Foldout("Movement Variables")] private float moveSpeed = 2f;
-		[SerializeField, Foldout("Movement Variables")] private float jumpForce = 8f;
+		[SerializeField, BoxGroup("Movement Variables")] private float _moveSpeed = 5f;
+		[SerializeField, BoxGroup("Movement Variables")] private float _jumpForce = 8f;
 		[Space]
-		[SerializeField, Foldout("Movement Variables")] private LayerMask groundedMask = default;
-		[SerializeField, Foldout("Movement Variables")] private float groundedRadius = 0.25f;
+		[SerializeField, BoxGroup("Movement Variables")] private LayerMask _groundedMask = default;
+		[SerializeField, BoxGroup("Movement Variables")] private float _groundedRayLength = 0.25f;
 
-		[SerializeField, Foldout("References")] private SpriteRenderer spriteRenderer = default;
-		[SerializeField, Foldout("References")] private Transform groundedCheckTransform = default;
+		[SerializeField, BoxGroup("References")] private SpriteRenderer _spriteRenderer = default;
+		[SerializeField, BoxGroup("References")] private Transform _groundedCheckTransform = default;
 
-		private Rigidbody2D rb2d = default;
+		[SerializeField, BoxGroup("References")] private Rigidbody2D rb2d = default;
+		[SerializeField, BoxGroup("References")] private Animator animator;
+
 		private ProjectPlatformerControls projectPlatformerInputActions = default;
-		private Animator animator;
 
 		#region Unity Callbacks
 		private void Awake()
 		{
-			rb2d = GetComponent<Rigidbody2D>();
-			animator = GetComponentInChildren<Animator>();
 			projectPlatformerInputActions = new ProjectPlatformerControls();
 		}
 		private void OnEnable()
@@ -52,14 +51,14 @@ namespace Project_Platformer
 		private void Move(InputAction.CallbackContext context)
 		{
 			Vector2 inputAxis = context.ReadValue<Vector2>();
-			rb2d.velocity = new Vector2(inputAxis.x * moveSpeed, rb2d.velocity.y);
+			rb2d.velocity = new Vector2(inputAxis.x * _moveSpeed, rb2d.velocity.y);
 
 			FlipSprite(inputAxis);
 		}
 		private void Jump(InputAction.CallbackContext context)
 		{
 			if (!IsGrounded()) return;
-			rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
+			rb2d.velocity = new Vector2(rb2d.velocity.x, _jumpForce);
 		}
 		private void Attack(InputAction.CallbackContext context)
 		{
@@ -69,21 +68,14 @@ namespace Project_Platformer
 
 		private void FlipSprite(Vector2 inputAxis)
 		{
-			switch (inputAxis.x)
-			{
-				case 1:
-					spriteRenderer.flipX = false;
-					break;
-				case -1:
-					spriteRenderer.flipX = true;
-					break;
-			}
+			float inputX = inputAxis.x;
+
+			if (inputX >= 0.1f) _spriteRenderer.flipX = false;
+			else if (inputX <= -0.1f) _spriteRenderer.flipX = true;
 		}
 		private bool IsGrounded()
 		{
-			Collider2D[] collidersUnderCharacter = Physics2D.OverlapCircleAll(groundedCheckTransform.position, groundedRadius, groundedMask);
-
-			return collidersUnderCharacter.Length > 0;
+			return Physics2D.Raycast(_groundedCheckTransform.position, Vector2.down, _groundedRayLength, _groundedMask);
 		}
 		private bool IsMoving()
 		{
@@ -100,13 +92,14 @@ namespace Project_Platformer
 			animator.SetBool("Moving", IsMoving());
 			animator.SetBool("Jumping", IsJumping());
 			animator.SetBool("Grounded", IsGrounded());
+			animator.SetFloat("Magnitude X", rb2d.velocity.magnitude / _moveSpeed);
 			animator.SetFloat("Velocity Y", rb2d.velocity.y);
 		}
 
 		private void OnDrawGizmos()
 		{
 			Gizmos.color = Color.green;
-			Gizmos.DrawWireSphere(groundedCheckTransform.position, groundedRadius);
+			Gizmos.DrawRay(_groundedCheckTransform.position, Vector3.down * _groundedRayLength);
 		}
 	}
 }

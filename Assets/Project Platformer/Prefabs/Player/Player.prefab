@@ -35,7 +35,7 @@ Transform:
   - {fileID: 5214333721357973208}
   - {fileID: 5214333721354220878}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &5214333721308906146
 CapsuleCollider2D:
@@ -121,14 +121,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e98a649b4515834c8482274ea8f2a9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpForce: 7
-  groundedMask:
+  _moveSpeed: 5
+  _jumpForce: 6.5
+  _groundedMask:
     serializedVersion: 2
     m_Bits: 128
-  groundedRadius: 0.3
-  spriteRenderer: {fileID: 5214333721357973211}
-  groundedCheckTransform: {fileID: 5214333721354220878}
+  _groundedRayLength: 0.3
+  _spriteRenderer: {fileID: 5214333721357973211}
+  _groundedCheckTransform: {fileID: 5214333721354220878}
+  rb2d: {fileID: 5214333721308906207}
+  animator: {fileID: 5214333721357973210}
 --- !u!1 &5214333721354220879
 GameObject:
   m_ObjectHideFlags: 0

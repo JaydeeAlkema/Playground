@@ -94,9 +94,9 @@ namespace Project_Platformer
                 {
                     ""name"": ""Gamepad"",
                     ""id"": ""e9e68266-6efb-4f24-836a-ed5cf8172208"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""StickDeadzone(min=0.4,max=1)"",
                     ""groups"": """",
                     ""action"": ""Grounded Move"",
                     ""isComposite"": true,
