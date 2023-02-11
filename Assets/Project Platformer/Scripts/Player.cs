@@ -83,13 +83,7 @@ namespace Project_Platformer
 		{
 			Collider2D[] collidersUnderCharacter = Physics2D.OverlapCircleAll(groundedCheckTransform.position, groundedRadius, groundedMask);
 
-			switch (collidersUnderCharacter.Length)
-			{
-				case 0:
-					return false;
-				default:
-					return true;
-			}
+			return collidersUnderCharacter.Length > 0;
 		}
 		private bool IsMoving()
 		{
